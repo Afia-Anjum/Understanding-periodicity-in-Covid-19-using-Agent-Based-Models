@@ -124,16 +124,9 @@ class SchellingAgent(Agent):
         #he can remain in his initial agent type as well. 
         # in the last two scenario, he will just move. 
         
-        #resistance gain depend korbe agent age type & agent disease type er upore
-        #print("I am type:")
-        #print(self.type)
+        #resistance gain will depend on agent age type & agent disease type 
         
         week_day_number=(self.model.schedule.steps % 7)+1
-        #print("Printing schedule.steps:")
-        #print(self.model.schedule.steps)
-        #print("HIII")
-        #print(week_day_number)
-        #print(self.model.schedule.steps)
         
         
         daily_move=0
@@ -161,8 +154,6 @@ class SchellingAgent(Agent):
             #    return
             neigbour_infected=0
             for neighbor in self.model.grid.neighbor_iter(self.pos):
-                #print("Inside:")
-                #print(neighbor.type)
                 #if self.type==0 and neighbor.type==0:
                 #    similar += 1
                 if self.type==0 and (neighbor.type == 3 or neighbor.type == 4 or neighbor.type == 6):  #infected and can spread infection
@@ -193,9 +184,7 @@ class SchellingAgent(Agent):
                 #print(possible_steps)
                 
                 new_position=self.random.choice(possible_steps)
-                #print(possible_steps)
-                #print(self.pos)
-                #print(new_position)
+
                 
                 cnt=0
                 while not (self.model.grid.is_cell_empty(new_position)):
@@ -205,9 +194,6 @@ class SchellingAgent(Agent):
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
                     
-                    #if cnt>4:
-                    #    #if cnt>12:
-                    #    break
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)
             
@@ -218,8 +204,6 @@ class SchellingAgent(Agent):
                 #!!model normal_death model for these agents
                 possible_steps=self.model.get_real_neighbours(self.pos)
                 new_position=self.random.choice(possible_steps)
-                #print(possible_steps)
-                #print(new_position)
                 cnt=0
                 while not (self.model.grid.is_cell_empty(new_position)):
                     #if cnt>12:
@@ -227,14 +211,10 @@ class SchellingAgent(Agent):
                         break
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
-                #if cnt>8:
-                ##if cnt>12:
-                #    break
             
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)
-                #self.model.grid.move_agent(self, new_position)
-                #break
+
         
             elif self.type==2 or self.type==5 or self.type==7: 
                 self.agent_infection_interval=self.agent_infection_interval+1
@@ -253,31 +233,7 @@ class SchellingAgent(Agent):
                     else:
                         self.type=8
                 
-                #because they (2,5,7) are maintaining isolation/non-spreader, that's why no new possible position for them
-                '''        
-                cnt=0
-                while not (self.model.grid.is_cell_empty(new_position)):
-                    if cnt>4:
-                        #if cnt>12:
-                        break
-                    new_position=self.random.choice(possible_steps)
-                    cnt+=1
-                    #print(possible_steps)
-                    #print(new_position)
-                    if cnt>4:
-                        #if cnt>12:
-                        break
-                    self.model.grid.move_agent(self, new_position)
-                '''
-                #break
-        
-            #elif self.type==9:
-            #    #self.model.normal_death += 1
-            #    #self.model.susceptible =self.model.susceptible- 1
-            #    break
-            #elif self.type==8:
-            #    #self.model.covid_death += 1
-            #    break
+
         
             elif self.type==3 or self.type==4 or self.type==6:
                 self.agent_infection_interval=self.agent_infection_interval+1
@@ -295,10 +251,6 @@ class SchellingAgent(Agent):
                         random.shuffle(num)
                         self.type=num[0]
                 possible_steps=self.model.get_real_neighbours(self.pos)
-                #print("")
-                #print(self.pos)
-                #possible_steps1=get_neighbors(self.pos, moore=True,include_center= False,radius= 2)
-                #print(possible_steps1)
                 new_position=self.random.choice(possible_steps)
                 
                 cnt=0
@@ -308,9 +260,6 @@ class SchellingAgent(Agent):
                         break
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
-            #if cnt>4:    
-            ##if cnt>12:
-            #    break
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)    
                     #self.model.grid.move_agent(self, new_position)
@@ -324,20 +273,9 @@ class SchellingAgent(Agent):
                 if (self.type==3 or self.type==4 or self.type==6) and (initial_type==3 or initial_type==4 or initial_type==6):
                     return 
                 
-                #print(initial_type)
-                #print("Changed type:")
-                #print(self.type)
-                    
-                #print(initial_type)
                 if self.type==1:
                     self.model.resistance_gain += 1
                         
-                    #self.model.infected =self.model.infected - 1
-                    #she to infected theke kombe na,cause cumulative infection ta rakha hocche
-                        
-                    #self.model.current_infections=self.model.current_infections-1
-                    #portrayal["Color"] = "green"
-                    #resistant hoise, must infected chilo
                 elif self.type==8:
                     self.model.covid_death += 1
                     #self.model.current_infections=self.model.current_infections-1
@@ -358,13 +296,6 @@ class SchellingAgent(Agent):
                     self.model.infected =self.model.infected + 1
                     #self.model.current_infections=self.model.current_infections-1
         
-        #that block starts here
-                
-        #that block ends here
-                
-        #if similar==8:
-        #    print("Change it later")
-            #self.model.grid.move_to_empty(self)
         
 class Schelling(Model):
     """
@@ -546,7 +477,6 @@ class Schelling(Model):
         return nearest_empty
     
     def get_real_neighbours(self,pos):
-        #print("Hi")
         x=pos[0]
         y=pos[1]
         neighbour_list=[]
@@ -562,39 +492,6 @@ class Schelling(Model):
         neighbour_list.append((x,y-1))
         neighbour_list.append((x+1,y-1))
         
-        '''
-        #second boundary circulating the current position : 16 spots
-        neighbour_list.append((x+2,y))
-        neighbour_list.append((x+2,y+1))
-        neighbour_list.append((x+2,y+2))
-        neighbour_list.append((x-1,y+2))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y-2))
-        neighbour_list.append((x-2,y-2))
-        neighbour_list.append((x-2,y))
-        neighbour_list.append((x,y+2))
-        neighbour_list.append((x+1,y+2))
-        neighbour_list.append((x+1,y-2))
-        neighbour_list.append((x+2,y-2))
-        neighbour_list.append((x+2,y-1))
-        neighbour_list.append((x-1,y-2))
-        neighbour_list.append((x-2,y-1))
-        neighbour_list.append((x-2,y+1))
-        
-        '''
-        
-        '''
-        neighbour_list.append((x+3,y))
-        neighbour_list.append((x+3,y+1))
-        neighbour_list.append((x+2,y+2))
-        neighbour_list.append((x-1,y+2))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y-2))
-        neighbour_list.append((x-2,y-2))
-        neighbour_list.append((x-2,y))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y+2))
-        '''
         
         # so that neighbour does not go out of boundary
         
@@ -625,7 +522,6 @@ class Schelling(Model):
         #self.susceptible=0
         
         prev_infected=self.infected
-        #print(self.susceptible)
         print("Printing the variables in each step:\n")
         print("number of day: "+str((self.schedule.steps % 7)+1))
         print(self.infected)
@@ -638,7 +534,6 @@ class Schelling(Model):
         
         cumulative_infected=self.infected
         
-        print(cumulative_infected)
         
         #for tracking the daily new number of infections 
         self.newly_infected=cumulative_infected-prev_infected
@@ -651,12 +546,9 @@ class Schelling(Model):
         elif ((self.schedule.steps % 7)+1)==1:
             self.newly_infected=temporary
         
-        #print(len(self.kill_agents)) 5 ashtese, no problem
         
         # collect data and determine the number of agent acquired resistance or are dead, susceptible or infected
         self.datacollector.collect(self)
-        
-        #print(self.infected)
         
         
         if not self.social_distancing:
