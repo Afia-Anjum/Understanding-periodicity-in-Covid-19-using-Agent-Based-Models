@@ -53,19 +53,6 @@ for j in range(100):  #10 different runs/100 different runs
     list_collect.append(gini_list)
     
     
-    #total number of agents after the agrregation from 10 runs: 10,000
-    
-    
-    #print(infected_list)
-#gini.plot()
-    
-#print(list_collect)
-
-#smooth_data = pd.Series(infected_list).rolling(window=7).mean().plot(style='k')
-#plt.show()
-
-#h=[(list_collect[0][j] + list_collect[1][j]+list_collect[2][j] +list_collect[3][j] +list_collect[4][j] +list_collect[5][j] +list_collect[6][j] +list_collect[7][j] +list_collect[8][j] +list_collect[9][j])/10 for j in range(len(list_collect[0]))]
-#plt.plot(h,'r-')
 
 p=0
 h=[]
@@ -78,43 +65,6 @@ for j in range(len(list_collect[0])):
     
 plt.plot(h,'r-')       
 
-'''
-
-s=pd.Dataframe(list_collect)
-df = pd.DataFrame(list_collect)
-df.to_csv('reporting_artifacts_100runs_5thJune.csv',index=False)
-
-'''
-
-'''
-plt.plot(list_collect[0],'b-')
-plt.plot(list_collect[1],'b-')
-plt.plot(list_collect[2],'b-')
-plt.plot(list_collect[3],'b-')
-plt.plot(list_collect[4],'b-')
-plt.plot(list_collect[5],'b-')
-plt.plot(list_collect[6],'b-')
-plt.plot(list_collect[7],'b-')
-plt.plot(list_collect[8],'b-')
-plt.plot(list_collect[9],'b-')
-plt.plot(h,'r-')
-plt.show()
-'''
-
-'''
-import matplotlib.pyplot as plt
-import scipy.signal as signal
-ts = infected_list[0:]
-#Moving average, basically acts as the low pass filter:
-N  = 3    # Filter order
-Wn = 0.1 # Cutoff frequency
-B, A = signal.butter(N, Wn, output='ba')
-smooth_data = signal.filtfilt(B,A, infected_list[0:])
-plt.plot(ts,'r-')
-#plt.plot(smooth_data[0:],'b-')
-plt.show()
-    
-'''
     
     
     
