@@ -182,11 +182,11 @@ Created on Fri Sep 11 14:26:43 2020
                 #self.model.infected =self.model.infected - 1
                 #self.model.current_infections=self.model.current_infections-1
                 #portrayal["Color"] = "green"
-                #resistant hoise, must infected chilo
+                #resistant, which means it was infected
             elif self.type==8:
                 self.model.covid_death += 1
                 #self.model.current_infections=self.model.current_infections-1
-                #she to infected theke kombe na,cause cumulative infection ta rakha hocche
+                #not decreasing from the infected, as we are keeping the cumulative infection
             elif self.type==9:
                 self.model.normal_death += 1
                 self.model.susceptible =self.model.susceptible - 1
