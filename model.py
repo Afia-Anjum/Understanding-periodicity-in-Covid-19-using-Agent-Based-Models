@@ -141,43 +141,21 @@ class SchellingAgent(Agent):
         #print(self.type)
         
         week_day_number=(self.model.schedule.steps % 7)+1
-        #print("Printing schedule.steps:")
-        #print(self.model.schedule.steps)
-        #print("HIII")
-        #print(week_day_number)
-        #print(self.model.schedule.steps)
         
         
         daily_move=0
         
         if week_day_number==6 or week_day_number==7:
-            #infection_chance=0.9
-            #agents_movement_probability=0.5
-            #agents_movement_probability=0.7
             agents_movement_probability=-0.2
             daily_move=random.randint(0,2)  #2 moves on weekends
         else:
-            #infection_chance=0.1
-            #agents_movement_probability=-0.2
             agents_movement_probability=0.5
-            #daily_move=random.randint(0,20)  #0-20 moves on weekdays
             
             #only for barrier
             daily_move=random.randint(0,20)  #0-20 moves on weekdays
         
-        #if self.type==11:
-        #    daily_move=0
-        #saving the initial type at a particular time step
-        #initial_type=self.type    
-        
-        
-        
-        
-        #print("SelfType:"+str(self.type))
-        #print(self)
         
         if self.type==3 or self.type==4 or self.type==6 or self.type==2 or self.type==5 or self.type==7:
-            #print("YES!!")
             self.agent_infection_interval=self.agent_infection_interval+1
             
         
@@ -185,22 +163,12 @@ class SchellingAgent(Agent):
         flag=0
         #iterating over the number of moves within each time step
         for d in range(daily_move):
-            #print(d)
-            #should be saved here/per move, otherwise, resistance gain will happen more than once.
-            #initial_type=self.type
-            #if self.type==10:
-            #    return
             if self.type==9 or self.type==8:
                 break
             
             neigbour_infected=0
             for neighbor in self.model.grid.neighbor_iter(self.pos):
-                #print("Inside:")
-                #print(neighbor.type)
-                #if self.type==0 and neighbor.type==0:
-                #    similar += 1
                 if self.type==0 and (neighbor.type == 3 or neighbor.type == 4 or neighbor.type == 6):  #infected and can spread infection
-                    #print("DOUBLE YES")
                     neigbour_infected=1
                     break
             
@@ -225,8 +193,6 @@ class SchellingAgent(Agent):
                     #if dice_roll  >= infection_chance:
                         num=[2,3,4,5,6,7]
                         
-                        #print("DOUBLE YES YES")
-                        
                         random.shuffle(num)
                         self.type=num[0]
                         flag=1
@@ -234,14 +200,8 @@ class SchellingAgent(Agent):
                 
                 #possible_steps = self.model.grid.get_neighborhood(self.pos,moore=True,include_center=False)
                 possible_steps=self.model.get_real_neighbours(self.pos) #UPTO 1 step of neigbours,
-                #change it upto 3 steps of neigbours
-                #in every directions later on
-                #print(possible_steps)
                 
                 new_position=self.random.choice(possible_steps)
-                #print(possible_steps)
-                #print(self.pos)
-                #print(new_position)
                 
                 cnt=0
                 while not (self.model.grid.is_cell_empty(new_position)):
@@ -251,9 +211,6 @@ class SchellingAgent(Agent):
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
                     
-                    #if cnt>4:
-                    #    #if cnt>12:
-                    #    break
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)
             
@@ -261,14 +218,11 @@ class SchellingAgent(Agent):
                 #break
                 
         
-            #elif self.type==0 or self.type==1:
             elif self.type==0 or self.type==1:
                 
                 #!!model normal_death model for these agents
                 possible_steps=self.model.get_real_neighbours(self.pos)
                 new_position=self.random.choice(possible_steps)
-                #print(possible_steps)
-                #print(new_position)
                 cnt=0
                 while not (self.model.grid.is_cell_empty(new_position)):
                     #if cnt>12:
@@ -276,21 +230,14 @@ class SchellingAgent(Agent):
                         break
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
-                #if cnt>8:
-                ##if cnt>12:
-                #    break
             
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)
-                #self.model.grid.move_agent(self, new_position)
-                #break
         
             elif self.type==2 or self.type==5 or self.type==7: 
                 #self.agent_infection_interval=self.agent_infection_interval+1
                 
                 dice_roll=random.uniform(0,1)
-                #print(dice_roll)
-                #if dice_roll < recovery_chance-0.1:
                 if self.agent_infection_interval>=recovery_interval:
                     if dice_roll > recovery_chance: 
                         self.type=1
@@ -305,31 +252,12 @@ class SchellingAgent(Agent):
                     random.shuffle(num)
                     self.type=num[0]
                 
-                #because they (2,5,7) are maintaining isolation/non-spreader, that's why no new possible position for them
-                '''        
-                cnt=0
-                while not (self.model.grid.is_cell_empty(new_position)):
-                    if cnt>4:
-                        #if cnt>12:
-                        break
-                    new_position=self.random.choice(possible_steps)
-                    cnt+=1
-                    #print(possible_steps)
-                    #print(new_position)
-                    if cnt>4:
-                        #if cnt>12:
-                        break
-                    self.model.grid.move_agent(self, new_position)
-                '''
-                #break
         
         
             elif self.type==3 or self.type==4 or self.type==6:
                 #self.agent_infection_interval=self.agent_infection_interval+1
                 
                 dice_roll=random.uniform(0,1)
-                #print(dice_roll)
-                #if dice_roll < recovery_chance-0.1:
                 if self.agent_infection_interval>=recovery_interval:
                     if dice_roll > recovery_chance: 
                         self.type=1
@@ -345,10 +273,6 @@ class SchellingAgent(Agent):
                     self.type=num[0]
                         
                 possible_steps=self.model.get_real_neighbours(self.pos)
-                #print("")
-                #print(self.pos)
-                #possible_steps1=get_neighbors(self.pos, moore=True,include_center= False,radius= 2)
-                #print(possible_steps1)
                 new_position=self.random.choice(possible_steps)
                 
                 cnt=0
@@ -358,9 +282,6 @@ class SchellingAgent(Agent):
                         break
                     new_position=self.random.choice(possible_steps)
                     cnt+=1
-            #if cnt>4:    
-            ##if cnt>12:
-            #    break
                 if self.model.grid.is_cell_empty(new_position):
                     self.model.grid.move_agent(self, new_position)    
                     #self.model.grid.move_agent(self, new_position)
@@ -374,51 +295,22 @@ class SchellingAgent(Agent):
             if (self.type==3 or self.type==4 or self.type==6) and (initial_type==3 or initial_type==4 or initial_type==6):
                 return 
                 
-            #print(initial_type)
-            #print("Changed type:")
-            #print(self.type)
-                    
-            #print(initial_type)
             if self.type==1:
                 self.model.resistance_gain += 1
                 
-                #this person will not decrease from susceptible cause, resistance can only happen from covid infection: we are already decreasing the susceptible by 1 when getting covid infected
-                
-                #self.model.infected =self.model.infected - 1
-                #she to infected theke kombe na,cause cumulative infection ta rakha hocche
-                        
-                #self.model.current_infections=self.model.current_infections-1
-                #portrayal["Color"] = "green"
-                #resistant hoise, must infected chilo
             elif self.type==8:
                 self.model.covid_death += 1
-                
-                #this person will not decrease from susceptible cause, covid death can only happen from covid infection: we are already decreasing the susceptible by 1 when getting covid infected
-                #self.model.current_infections=self.model.current_infections-1
-                        
-                #she to infected theke kombe na,cause cumulative infection ta rakha hocche
-                        
-                #covid_death hoye gele no need to loop through for 20 moves
-                #break
+            
                         
             elif self.type==9:
                 self.model.normal_death += 1
                 self.model.susceptible =self.model.susceptible - 1
-                #death hoye gele no need to loop through for 20 moves
-                #break
             elif self.type==2 or self.type==3 or self.type==4 or self.type==5 or self.type==6 or self.type==7:
                 #if self.agent_infection_interval>=incub:
                 self.model.susceptible =self.model.susceptible - 1
                 self.model.infected =self.model.infected + 1
                 #self.model.current_infections=self.model.current_infections-1
         
-        #that block starts here
-                
-        #that block ends here
-                
-        #if similar==8:
-        #    print("Change it later")
-            #self.model.grid.move_to_empty(self)
         
 cnt=0
 
@@ -490,25 +382,9 @@ class Schelling(Model):
             self.susceptible=math.ceil((self.height * self.width * self.density)-self.infected)
         
         
-        #self.susceptible=self.susceptible-self.vaccinated
-        
-        
-        
-        #print(self.susceptible)
-        #print(self.infected)
-        
-        #print(self.infected)
-        #print(self.resistance_gain)
-        #print(density)
-        #print(self.susceptible)
-        
-        #self.current_infections=int(self.height * self.width * self.density)-self.susceptible
-        
+
         self.normal_death=0
-        #self.susceptible=int(self.height * self.width * self.density) - self.infected
-        #self.hospitalized=0 # needed? 
-        
-        #self.newly_infected=0
+
         self.newly_infected=self.infected
         
         self.datacollector = DataCollector(
@@ -640,7 +516,6 @@ class Schelling(Model):
         return nearest_empty
     
     def get_real_neighbours(self,pos):
-        #print("Hi")
         x=pos[0]
         y=pos[1]
         neighbour_list=[]
@@ -656,9 +531,6 @@ class Schelling(Model):
         neighbour_list.append((x,y-1))
         neighbour_list.append((x+1,y-1))
         
-        #print(neighbour_list)
-        #
-        #print(self.schedule.steps)
         
         
         #only for barrier
@@ -676,39 +548,6 @@ class Schelling(Model):
         #if neighbour_list
         #50,20 --50,75
         
-        '''
-        #second boundary circulating the current position : 16 spots
-        neighbour_list.append((x+2,y))
-        neighbour_list.append((x+2,y+1))
-        neighbour_list.append((x+2,y+2))
-        neighbour_list.append((x-1,y+2))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y-2))
-        neighbour_list.append((x-2,y-2))
-        neighbour_list.append((x-2,y))
-        neighbour_list.append((x,y+2))
-        neighbour_list.append((x+1,y+2))
-        neighbour_list.append((x+1,y-2))
-        neighbour_list.append((x+2,y-2))
-        neighbour_list.append((x+2,y-1))
-        neighbour_list.append((x-1,y-2))
-        neighbour_list.append((x-2,y-1))
-        neighbour_list.append((x-2,y+1))
-        
-        '''
-        
-        '''
-        neighbour_list.append((x+3,y))
-        neighbour_list.append((x+3,y+1))
-        neighbour_list.append((x+2,y+2))
-        neighbour_list.append((x-1,y+2))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y-2))
-        neighbour_list.append((x-2,y-2))
-        neighbour_list.append((x-2,y))
-        neighbour_list.append((x-2,y+2))
-        neighbour_list.append((x,y+2))
-        '''
         
         # so that neighbour does not go out of boundary
         
